@@ -1,0 +1,106 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+    <ui:composition template="/WEB-INF/templates/common/admin.xhtml">
+        <ui:define name="title">CT | Registration</ui:define>        
+        <h:head>
+            <style>
+                <!-- work around to fix selectonemenu bug in Chrome & Safari -->
+                .ui-selectonemenu-label{
+                    width:90% !important;
+                }
+            </style>
+        </h:head>
+       
+        
+        <ui:define name="content">
+
+            <div class="ui-grid ui-grid-responsive">
+                <div class="ui-grid-row">
+                    <div class="ui-grid-col-1" id="leftCol"></div>
+                    <div class="ui-grid-col-10" id="mainCol">
+                        <br/>
+                        <h:form>
+                            <p:messages autoUpdate="true"/>
+                            <br/>
+                            
+                            <p:dashboard id="board" model="#{reservationBackingBean.model}" rendered="#{reservationBackingBean.canReserveFlights}">
+                                <p:panel id="OutboundFlights" header="Select outbound flight" >
+                                    <p:dataTable var="itinerary" value="#{reservationBackingBean.outboundFlights}" tableStyle="width:auto"
+                                                 selection="#{reservationBackingBean.selectedOutboundFlight}" rowKey="#{itinerary.index}" style="text-align: center;">
+                                        <p:column selectionMode="single" />
+                                        <p:column headerText="Itinerary" >
+                                            <p:dataTable var="flight" value="#{itinerary.legs}" style="text-align: center;">
+                                                <p:column style="width: 100px" headerText="Flight number">
+                                                    <h:outputText value="#{flight.airline}" /><br/>
+                                                    <h:outputText value="#{flight.flightNumber}" />
+                                                </p:column>
+                                                <p:column style="width: 250px" headerText="From">
+                                                    <h:outputText value="#{flight.departureLocation}" /><br/>
+                                                    <h:outputText value="#{flight.departureAirport}" /><br/>
+                                                    <h:outputText value="#{flight.departureDate}" />
+                                                </p:column>
+                                                <p:column style="width: 250px" headerText="To">
+                                                    <h:outputText value="#{flight.arrivalLocation}" /><br/>
+                                                    <h:outputText value="#{flight.arrivalAirport}" /><br/>
+                                                    <h:outputText value="#{flight.arrivalDate}" />
+                                                </p:column>
+                                            </p:dataTable>
+                                        </p:column>
+                                        <p:column headerText="Price">
+                                            <h:outputText value="#{itinerary.cost}" />
+                                        </p:column>
+                                    </p:dataTable>
+                                </p:panel>
+                                <p:panel id="InboundFlights" header="Select inbound flight" rendered="#{reservationBackingBean.hasReturnFlight}">
+                                    <p:dataTable var="itinerary" value="#{reservationBackingBean.inboundFlights}" tableStyle="width:auto"
+                                                 selection="#{reservationBackingBean.selectedInboundFlight}" rowKey="#{itinerary.index}" style="text-align: center;">
+                                        <p:column selectionMode="single" />
+                                        <p:column headerText="Itinerary" >
+                                            <p:dataTable var="flight" value="#{itinerary.legs}" style="text-align: center;">
+                                                <p:column style="width: 100px" headerText="Flight number">
+                                                    <h:outputText value="#{flight.airline}" /><br/>
+                                                    <h:outputText value="#{flight.flightNumber}" />
+                                                </p:column>
+                                                <p:column style="width: 250px" headerText="From">
+                                                    <h:outputText value="#{flight.departureLocation}" /><br/>
+                                                    <h:outputText value="#{flight.departureAirport}" /><br/>
+                                                    <h:outputText value="#{flight.departureDate}" />
+                                                </p:column>
+                                                <p:column style="width: 250px" headerText="To">
+                                                    <h:outputText value="#{flight.arrivalLocation}" /><br/>
+                                                    <h:outputText value="#{flight.arrivalAirport}" /><br/>
+                                                    <h:outputText value="#{flight.arrivalDate}" />
+                                                </p:column>
+                                            </p:dataTable>
+                                        </p:column>
+                                        <p:column headerText="Price">
+                                            <h:outputText value="#{itinerary.cost}" />
+                                        </p:column>
+                                    </p:dataTable>
+                                </p:panel>
+                            </p:dashboard>
+     
+                            <h:panelGrid columns="3" style="margin: 0 auto;" rendered="#{reservationBackingBean.canReserveFlights}">
+                                <p:commandButton value="Back" action="/admin/index.xhtml" immediate="true" />
+                                <p:commandButton value="Cancel" action="/admin/bookings.xhtml?faces-redirect=true" immediate="true" />
+                                <p:commandButton value="Reserve Flight" action="#{reservationBackingBean.reserveFlight()}" ajax="false" validateClient="true" />                   
+                            </h:panelGrid>
+                            <h:panelGrid columns="2" style="margin: 0 auto;" rendered="#{reservationBackingBean.searchAgainAvailable}">
+                                <p:commandButton value="Search Flights" action="/admin/index.xhtml" immediate="true" />
+                                <p:commandButton value="Cancel" action="/admin/bookings.xhtml?faces-redirect=true" immediate="true" />               
+                            </h:panelGrid>
+                        
+                        </h:form>
+
+                    </div>
+                    <div class="ui-grid-col-1" id="leftCol"></div>
+                </div>
+            </div>
+
+        </ui:define>
+    </ui:composition>
+</html>

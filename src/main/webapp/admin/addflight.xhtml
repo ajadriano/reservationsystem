@@ -1,0 +1,110 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+    <ui:composition template="/WEB-INF/templates/common/admin.xhtml">
+        <ui:define name="title">CT | Registration</ui:define>        
+        <h:head>
+            <style>
+                <!-- work around to fix selectonemenu bug in Chrome & Safari -->
+                .ui-selectonemenu-label{
+                    width:90% !important;
+                }
+            </style>
+        </h:head>
+       
+        
+        <ui:define name="content">
+
+            <div class="ui-grid ui-grid-responsive">
+                <div class="ui-grid-row">
+                    <div class="ui-grid-col-3" id="leftCol"></div>
+                    <div class="ui-grid-col-6" id="mainCol">
+                        <br/>
+                        <h:form>
+                            <p:messages autoUpdate="true"/>
+                            <br/>
+                            
+                            <p:outputLabel value="Select airline" />
+                            <br/>
+                            <p:selectOneMenu value="#{flightBackingBean.airlineCode}" style="width:600px">
+                                <f:selectItems value="#{flightBackingBean.airlines}" var="airline"
+                                               itemLabel="#{airline.name}" itemValue="#{airline.airlineCode}" />
+                            </p:selectOneMenu>
+                            
+                            <div style="margin: 5px">
+                                <p:outputLabel style="float: left; margin-right: 5px;" value="Flight number" />
+                                <p:inputText value="#{flightBackingBean.flightNumber}" validatorMessage="Invalid flight number.">
+                                    <f:validateRegex pattern="[0-9]{3}"/>
+                                </p:inputText>
+                            </div>
+                            
+                            <br/>
+                            
+                            <p:outputLabel value="Departure airport" />
+                            <br/>
+                            <p:selectOneMenu value="#{flightBackingBean.departureAirportCode}" style="width:600px">
+                                <f:selectItems value="#{flightBackingBean.airports}" var="airport"
+                                               itemLabel="#{airport.label}" itemValue="#{airport.airportCode}" />
+                            </p:selectOneMenu>    
+                            <br/>
+                            
+                            <p:outputLabel value="Select departure day and time" />
+                            <br/>
+                            <div>
+                                <p:selectOneMenu style="float: left; margin-right: 5px;" value="#{flightBackingBean.departureDay}">
+                                    <f:selectItems value="#{flightBackingBean.daysOfWeek}"  />
+                                </p:selectOneMenu>
+                                <pe:timePicker value="#{flightBackingBean.departureTime}" mode="popup" widgetVar="popupTimeWidget" label="Popup time picker"/> 
+                            </div>
+                            <br/>
+                            
+                            <p:outputLabel value="Arrival airport" />
+                            <br/>
+                            <p:selectOneMenu value="#{flightBackingBean.arrivalAirportCode}" style="width:600px">
+                                <f:selectItems value="#{flightBackingBean.airports}" var="airport"
+                                               itemLabel="#{airport.label}" itemValue="#{airport.airportCode}" />
+                            </p:selectOneMenu>    
+                            <br/>
+                            
+                            <p:outputLabel value="Select arrival day and time" />
+                            <br/>
+                            <div>
+                                <p:selectOneMenu style="float: left; margin-right: 5px;" value="#{flightBackingBean.arrivalDay}">
+                                    <f:selectItems value="#{flightBackingBean.daysOfWeek}"  />
+                                </p:selectOneMenu>
+                                <pe:timePicker value="#{flightBackingBean.arrivalTime}" mode="popup" widgetVar="popupTimeWidget" label="Popup time picker"/> 
+                            </div>
+                            <br/>
+                            
+                            <div style="margin: 5px">
+                                <p:outputLabel style="float: left; margin-right: 5px;" value="Business class seat cost" />
+                                <p:inputText value="#{flightBackingBean.businessClassCost}" converterMessage="Invalid input for business class cost.">
+                                    <f:convertNumber/>
+                                </p:inputText>  
+                            </div>
+                            
+                            <div style="margin: 5px">
+                                <p:outputLabel style="float: left; margin-right: 5px;" value="Economy class seat cost" />
+                                <p:inputText value="#{flightBackingBean.economyClassCost}" converterMessage="Invalid input for economy class cost.">
+                                    <f:convertNumber />
+                                </p:inputText>  
+                            </div>
+                            <br/>
+                            
+                            <h:panelGrid columns="2" style="margin: 0 auto;">
+                                <p:commandButton value="Add Flight" action="#{flightBackingBean.addFlight()}"/>
+                                <p:commandButton value="Cancel" action="/admin/flights.xhtml?faces-redirect=true" immediate="true"/>
+                            </h:panelGrid>
+                        </h:form>
+
+                    </div>
+                    <div class="ui-grid-col-3" id="leftCol"></div>
+                </div>
+            </div>
+
+        </ui:define>
+    </ui:composition>
+</html>

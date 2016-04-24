@@ -1,0 +1,94 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <ui:composition template="/WEB-INF/templates/common/admin.xhtml">
+        <ui:define name="title">CT | Register User</ui:define>        
+        <h:head>
+            <style>
+                <!-- work around to fix selectonemenu bug in Chrome & Safari -->
+                .ui-selectonemenu-label{
+                    width:90% !important;
+                }
+            </style>
+        </h:head>
+       
+        
+        <ui:define name="content">
+
+            <div class="ui-grid ui-grid-responsive">
+                <div class="ui-grid-row">
+                    <div class="ui-grid-col-3" id="leftCol"></div>
+                    <div class="ui-grid-col-10" id="mainCol">
+
+                        <br/>
+                        <h:form>
+                            <p:messages autoUpdate="true"/>
+                            <br/>
+                            <div>
+                                <h:panelGrid style="margin: 0 auto; float: left;">
+                                    <h:panelGrid columns="2" style="margin: 0 auto;">
+                                        <p:outputLabel value="Username" />
+                                        <p:inputText id="login_username" value="#{reservationBackingBean.userBackingBean.loginUsername}"/> 
+
+                                        <p:outputLabel value="Password" />
+                                        <p:password id="login_password" value="#{reservationBackingBean.userBackingBean.loginPassword}"></p:password>
+                                    </h:panelGrid> 
+                                    <h:panelGrid columns="2" style="margin: 0 auto;">
+                                        <p:commandButton value="Login" action="#{reservationBackingBean.login()}" />
+                                        <p:commandButton value="Cancel" action="/admin/bookings.xhtml?faces-redirect=true" immediate="true" />  
+                                    </h:panelGrid>
+                                </h:panelGrid>
+                                <h:panelGrid style="margin: 0 auto;">
+                                    <h:panelGrid columns="2" style="margin: 0 auto;">
+                                        <p:outputLabel value="Username" />
+                                        <p:inputText id="user_username" value="#{reservationBackingBean.userBackingBean.username}"/> 
+
+                                        <p:outputLabel value="Password" />
+                                        <p:password id="user_password" value="#{reservationBackingBean.userBackingBean.password}"></p:password>
+
+                                        <p:outputLabel value="Confirm Password" />
+                                        <p:password id="user_confirmpassword" value="#{reservationBackingBean.userBackingBean.confirmPassword}"></p:password>
+
+                                        <p:outputLabel value="Name" />
+                                        <p:inputText id="user_name" value="#{reservationBackingBean.userBackingBean.name}"/> 
+
+                                        <p:outputLabel value="Address" />
+                                        <p:inputText id="user_address" value="#{reservationBackingBean.userBackingBean.address}"/> 
+
+                                        <p:outputLabel value="Email address" />
+                                        <p:inputText id="user_emailaddress" value="#{reservationBackingBean.userBackingBean.emailAddress}" validatorMessage="Invalid email address">
+                                            <f:validateRegex pattern="(^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$)?"/>
+                                        </p:inputText> 
+
+                                        <p:outputLabel value="Credit card number" />
+                                        <p:inputText id="user_creditcardnumber" value="#{reservationBackingBean.userBackingBean.creditCardNumber}" validatorMessage="Invalid credit card number.">
+                                            <f:validateRegex pattern="([0-9]{16})?"/>
+                                        </p:inputText>
+
+                                        <p:outputLabel value="Credit card expiration (MMYY)" />     
+                                        <p:inputText id="user_creditcardexpiration" value="#{reservationBackingBean.userBackingBean.creditCardExpiration}" validatorMessage="Invalid credit card expiration date.">
+                                            <f:validateRegex pattern="([0-9]{4})?"/>
+                                        </p:inputText>
+                                    </h:panelGrid> 
+                                    <h:panelGrid columns="2" style="margin: 0 auto;">
+                                        <p:commandButton value="Register" action="#{reservationBackingBean.register()}" />
+                                        <p:commandButton value="Cancel" action="/admin/bookings.xhtml?faces-redirect=true" immediate="true" />  
+                                    </h:panelGrid>
+                                </h:panelGrid>
+                            </div>
+                            
+                            
+                            <br/>
+                        
+                        </h:form>
+
+                    </div>
+                    <div class="ui-grid-col-1" id="rightCol"></div>
+                </div>
+            </div>
+
+        </ui:define>
+    </ui:composition>
+</html>

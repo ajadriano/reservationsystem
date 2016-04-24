@@ -1,0 +1,87 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+    <ui:composition template="/WEB-INF/templates/common/admin.xhtml">
+        <ui:define name="title">CT | Registration</ui:define>        
+        <h:head>
+            <style>
+                <!-- work around to fix selectonemenu bug in Chrome & Safari -->
+                .ui-selectonemenu-label{
+                    width:90% !important;
+                }
+            </style>
+        </h:head>
+       
+        
+        <ui:define name="content">
+
+            <div class="ui-grid ui-grid-responsive">
+                <div class="ui-grid-row">
+                    <div class="ui-grid-col-3" id="leftCol"></div>
+                    <div class="ui-grid-col-6" id="mainCol">
+                        <br/>
+                        <h:form>
+                            <p:messages autoUpdate="true"/>
+                            <br/>
+
+
+                            <p:outputLabel value="From" />
+                            <br/>
+                            <p:selectOneMenu id="fromairport" value="#{searchBackingBean.fromAirport}" style="width:600px">
+                                <f:selectItems value="#{searchBackingBean.airports}" var="airport"
+                                               itemLabel="#{airport.label}" itemValue="#{airport.airportCode}" />
+                            </p:selectOneMenu> 
+
+                            <div>
+                                <p:calendar id="fromdate" style="float: left;"  value="#{searchBackingBean.fromDate}" mindate="#{searchBackingBean.dateToday}"></p:calendar>
+                                <pe:timePicker id="fromtime" value="#{searchBackingBean.fromTime}"></pe:timePicker>
+                            </div>
+                            <br/>
+                            
+                            <p:outputLabel value="To" />
+                            <br/>
+                            <p:selectOneMenu id="toairport" value="#{searchBackingBean.toAirport}" style="width:600px">
+                                <f:selectItems value="#{searchBackingBean.airports}" var="airport"
+                                               itemLabel="#{airport.label}" itemValue="#{airport.airportCode}" />
+                            </p:selectOneMenu> 
+
+                            <div>
+                                <p:calendar id="todate" style="float: left;" value="#{searchBackingBean.toDate}" mindate="#{searchBackingBean.dateToday}"></p:calendar>
+                                <pe:timePicker id="totime" value="#{searchBackingBean.toTime}"></pe:timePicker>
+                            </div>
+                            
+                            <br/>
+
+                            <p:selectOneRadio id="flighttype" value="#{searchBackingBean.flightType}">
+                                <f:selectItems value="#{searchBackingBean.flightTypes}" />
+                            </p:selectOneRadio>
+
+                            <p:selectOneRadio id="flightclass" value="#{searchBackingBean.flightClass}">
+                                <f:selectItems value="#{searchBackingBean.flightClasses}" />
+                            </p:selectOneRadio>
+                            
+                            <br/>
+                               
+                            <div style="margin: 5px">
+                                <p:outputLabel style="float: left; margin-right: 5px;" value="Number of stops" />
+                                <p:spinner id="stops" value="#{searchBackingBean.stops}"/>
+                            </div>
+                            <div style="margin: 5px">
+                                <p:outputLabel style="float: left; margin-right: 6px;" value="Passenger count" />
+                                <p:spinner id="passengercount" min="1" value="#{searchBackingBean.passengerCount}"/>
+                            </div>      
+                            <p:commandButton value="Search" action="#{searchBackingBean.searchFlights()}"/>
+                        
+                        </h:form>
+
+                    </div>
+                    <div class="ui-grid-col-3" id="leftCol"></div>
+                </div>
+            </div>
+
+        </ui:define>
+    </ui:composition>
+</html>

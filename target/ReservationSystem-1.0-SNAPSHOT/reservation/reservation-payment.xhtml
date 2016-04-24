@@ -1,0 +1,124 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+    <ui:composition template="/WEB-INF/templates/common/admin.xhtml">
+        <ui:define name="title">CT | Registration</ui:define>        
+        <h:head>
+            <style>
+                <!-- work around to fix selectonemenu bug in Chrome & Safari -->
+                .ui-selectonemenu-label{
+                    width:90% !important;
+                }
+            </style>
+        </h:head>
+       
+        
+        <ui:define name="content">
+
+            <div class="ui-grid ui-grid-responsive">
+                <div class="ui-grid-row">
+                    <div class="ui-grid-col-1" id="leftCol"></div>
+                    <div class="ui-grid-col-10" id="mainCol">
+                        <br/>
+                        <h:form>
+                            <p:messages autoUpdate="true"/>
+                            <br/>
+                            
+                            <p:dashboard id="board" model="#{reservationBackingBean.model}" >
+                                <p:panel id="OutboundFlights" header="Outbound flight" >
+                                    <p:dataTable var="flight" value="#{reservationBackingBean.selectedOutboundFlight.legs}" style="text-align: center;">
+                                        <p:column style="width: 100px" headerText="Flight number">
+                                            <h:outputText value="#{flight.airline}" /><br/>
+                                            <h:outputText value="#{flight.flightNumber}" />
+                                        </p:column>
+                                        <p:column style="width: 250px" headerText="From">
+                                            <h:outputText value="#{flight.departureLocation}" /><br/>
+                                            <h:outputText value="#{flight.departureAirport}" /><br/>
+                                            <h:outputText value="#{flight.departureDate}" />
+                                        </p:column>
+                                        <p:column style="width: 250px" headerText="To">
+                                            <h:outputText value="#{flight.arrivalLocation}" /><br/>
+                                            <h:outputText value="#{flight.arrivalAirport}" /><br/>
+                                            <h:outputText value="#{flight.arrivalDate}" />
+                                        </p:column>
+                                    </p:dataTable>
+                                </p:panel>
+                                <p:panel id="InboundFlights" header="Inbound flight" rendered="#{reservationBackingBean.hasReturnFlight}" >
+                                    <p:dataTable var="flight" value="#{reservationBackingBean.selectedInboundFlight.legs}" style="text-align: center;">
+                                        <p:column style="width: 100px" headerText="Flight number">
+                                            <h:outputText value="#{flight.airline}" /><br/>
+                                            <h:outputText value="#{flight.flightNumber}" />
+                                        </p:column>
+                                        <p:column style="width: 250px" headerText="From">
+                                            <h:outputText value="#{flight.departureLocation}" /><br/>
+                                            <h:outputText value="#{flight.departureAirport}" /><br/>
+                                            <h:outputText value="#{flight.departureDate}" />
+                                        </p:column>
+                                        <p:column style="width: 250px" headerText="To">
+                                            <h:outputText value="#{flight.arrivalLocation}" /><br/>
+                                            <h:outputText value="#{flight.arrivalAirport}" /><br/>
+                                            <h:outputText value="#{flight.arrivalDate}" />
+                                        </p:column>
+                                    </p:dataTable>
+                                </p:panel>
+                                <p:panel id="BookingDetails" header="Booking Details" >
+                                    <div style="margin-top: 5px; margin-bottom: 5px;">
+                                        <p:outputLabel value="You are now booked, ticket number is: " style="float: left; margin-right: 5px;" rendered="#{reservationBackingBean.confirmed}" />
+                                        <p:outputLabel value="#{reservationBackingBean.reservationNumber}" rendered="#{reservationBackingBean.confirmed}" />
+                                    </div>
+                                    
+                                    <div style="margin-top: 5px; margin-bottom: 5px;">
+                                        <p:outputLabel value="Flight Class: " style="float: left; margin-right: 5px;" />
+                                        <p:outputLabel value="#{reservationBackingBean.flightClass}" />
+                                    </div>
+                                    
+                                    <div style="margin-top: 5px; margin-bottom: 5px;">
+                                        <p:outputLabel value="Passenger count: " style="float: left; margin-right: 5px;" />
+                                        <p:outputLabel value="#{reservationBackingBean.passengerCount}" />
+                                    </div>
+                                    
+                                    <div style="margin-top: 5px; margin-bottom: 5px;">
+                                        <p:outputLabel value="Credit card number: " style="float: left; margin-right: 5px;" />
+                                        <p:outputLabel value="#{reservationBackingBean.creditCardNumber}" rendered="#{reservationBackingBean.confirmed}"/>
+                                        <p:inputText id="user_creditcardnumber" value="#{reservationBackingBean.creditCardNumber}" 
+                                                     rendered="#{reservationBackingBean.notConfirmed}"
+                                                     validatorMessage="Invalid credit card number.">
+                                            <f:validateRegex pattern="[0-9]{16}"/>
+                                        </p:inputText>
+                                    </div>
+                                    
+                                    <div style="margin-top: 5px; margin-bottom: 5px;">
+                                        <p:outputLabel value="Credit card expiration (MMYY): " style="float: left; margin-right: 5px" />
+                                        <p:outputLabel value="#{reservationBackingBean.creditCardExpiration}" rendered="#{reservationBackingBean.confirmed}"  />  
+                                        <p:inputText id="user_creditcardexpiration" value="#{reservationBackingBean.creditCardExpiration}" 
+                                                     rendered="#{reservationBackingBean.notConfirmed}"
+                                                     validatorMessage="Invalid credit card expiration date.">
+                                            <f:validateRegex pattern="[0-9]{4}"/>
+                                        </p:inputText>
+                                    </div> 
+                                    
+                                    <div style="margin-top: 5px; margin-bottom: 5px;">
+                                        <p:outputLabel value="Price: " style="float: left; margin-right: 5px;" />
+                                        <p:outputLabel value="#{reservationBackingBean.price}" />
+                                    </div>
+                                </p:panel>
+                            </p:dashboard>
+     
+                            <h:panelGrid columns="3" style="margin: 0 auto;" rendered="#{reservationBackingBean.notConfirmed}">
+                                <p:commandButton value="Back" action="reservation-payment" immediate="true"/>
+                                <p:commandButton value="Cancel" action="/admin/bookings.xhtml?faces-redirect=true" immediate="true" />
+                                <p:commandButton value="Book Flight" process="@all" update="BookingDetails" action="#{reservationBackingBean.confirmFlight()}" 
+                                                 ajax="false" validateClient="true" />                   
+                            </h:panelGrid>
+                        </h:form>
+                    </div>
+                    <div class="ui-grid-col-1" id="leftCol"></div>
+                </div>
+            </div>
+
+        </ui:define>
+    </ui:composition>
+</html>

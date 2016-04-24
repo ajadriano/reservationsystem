@@ -1,0 +1,49 @@
+<div id="id_list_inprog_cargoes" xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:h="http://xmlns.jcp.org/jsf/html"
+     xmlns:f="http://xmlns.jcp.org/jsf/core"
+     xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+     xmlns:p="http://primefaces.org/ui">
+    <p:dataTable var="reservation" value="#{listReservation.cancelledBookings}" 
+                 tableStyle="width:auto" style="text-align: center;">
+        <p:column headerText="Itinerary">
+            <p:dataTable var="flight" value="#{reservation.outboundFlight.legs}" style="text-align: center;">
+                <f:facet name="header">
+                    Outbound
+                </f:facet>
+                <p:column style="width: 100px" headerText="Flight number">
+                    <h:outputText value="#{flight.airline}" /><br/>
+                    <h:outputText value="#{flight.flightNumber}" />
+                </p:column>
+                <p:column style="width: 250px" headerText="From">
+                    <h:outputText value="#{flight.departureLocation}" /><br/>
+                    <h:outputText value="#{flight.departureAirport}" /><br/>
+                    <h:outputText value="#{flight.departureDate}" />
+                </p:column>
+                <p:column style="width: 250px" headerText="To">
+                    <h:outputText value="#{flight.arrivalLocation}" /><br/>
+                    <h:outputText value="#{flight.arrivalAirport}" /><br/>
+                    <h:outputText value="#{flight.arrivalDate}" />
+                </p:column>
+            </p:dataTable>
+            <p:dataTable var="flight" value="#{reservation.inboundFlight.legs}" rendered="#{reservation.hasInboundFlight}" style="text-align: center;">
+                <f:facet name="header">
+                    Inbound
+                </f:facet>
+                <p:column style="width: 100px" headerText="Flight number">
+                    <h:outputText value="#{flight.airline}" /><br/>
+                    <h:outputText value="#{flight.flightNumber}" />
+                </p:column>
+                <p:column style="width: 250px" headerText="From">
+                    <h:outputText value="#{flight.departureLocation}" /><br/>
+                    <h:outputText value="#{flight.departureAirport}" /><br/>
+                    <h:outputText value="#{flight.departureDate}" />
+                </p:column>
+                <p:column style="width: 250px" headerText="To">
+                    <h:outputText value="#{flight.arrivalLocation}" /><br/>
+                    <h:outputText value="#{flight.arrivalAirport}" /><br/>
+                    <h:outputText value="#{flight.arrivalDate}" />
+                </p:column>
+            </p:dataTable>
+        </p:column>
+    </p:dataTable>
+</div>
